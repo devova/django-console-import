@@ -2,6 +2,7 @@
 This is the test task I received during interview process
 
 # Table of content
+[Assumptions](#assumptions) |
 [Features](#features) |
 [Getting Started](#getting-started) |
 [Prerequisites](#prerequisites) |
@@ -9,7 +10,8 @@ This is the test task I received during interview process
 [How to run](#how-to-run) |
 [Contributing](#contributing)
 
-# Introduction
+# Assumptions
+The POL table has some constraints that were not explicitly defined but follow logical rules.
 
 
 # Features
