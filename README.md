@@ -47,6 +47,7 @@ docker compose up api
 ```
 Or as python
 ```shell
+docker compose up migrate collectstatic
 python src/manage.py runserver localhost:8000
 ```
 Then navigate to [admin](http://localhost:8000/admin).
