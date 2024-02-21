@@ -1,12 +1,10 @@
 import csv
-import sys
 from decimal import Decimal
 from typing import Annotated, Iterator
 
-from pydantic import Field, BeforeValidator, ValidationError
+from pydantic import Field, BeforeValidator
 
-from . import Adapter
-from .base import Record
+from .base import BaseAdapter, Record
 
 
 def parse_ratings(v) -> str:
@@ -18,25 +16,19 @@ def parse_ratings(v) -> str:
 
 
 class CSVRecord(Record):
-    name: Annotated[str, Field(..., alias="poi_name")]
-    external_id: Annotated[str, Field(..., alias="poi_id")]
-    category: Annotated[str, Field(..., alias="poi_category")]
+    name: Annotated[str, Field(alias="poi_name")]
+    external_id: Annotated[str, Field(alias="poi_id")]
+    category: Annotated[str, Field(alias="poi_category")]
     latitude: Annotated[Decimal, Field(alias="poi_latitude")]
     longitude: Annotated[Decimal, Field(alias="poi_longitude")]
     ratings: Annotated[str, Field(alias="poi_ratings"), BeforeValidator(parse_ratings)]
 
 
-class CSVAdapter(Adapter):
-    def _iter_raw_chunks(self, stop_on_error: bool) -> Iterator[tuple]:
+class CSVAdapter(BaseAdapter):
+    record_model = CSVRecord
+
+    def _iter_items(self) -> Iterator[record_model]:
         with open(self.filename, "r") as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
-                try:
-                    rec = CSVRecord.model_validate(row).model_dump()
-                except ValidationError as e:
-                    print(f"Row: {row}")
-                    print(e)
-                    if stop_on_error:
-                        sys.exit(1)  # FIXME: this is a crap bag
-                else:
-                    yield tuple(rec[field] for field in Record.model_fields.keys())
+                yield row

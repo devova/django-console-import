@@ -49,8 +49,6 @@ class Command(BaseCommand):
             self.stdout.write(
                 ", ".join(f"{k}: {v}" for k, v in totals.items()), ending="\r"
             )
+        self.stdout.write(", ".join(f"{k}: {v}" for k, v in totals.items()))
         if not dry_run:
-            self.stdout.write(", ".join(f"{k}: {v}" for k, v in totals.items()))
-            self.stdout.write(
-                self.style.SUCCESS(f"{filename} has been imported, {dry_run}")
-            )
+            self.stdout.write(self.style.SUCCESS(f"{filename} has been imported"))

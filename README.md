@@ -7,13 +7,14 @@ This is the test task I received during interview process
 [Getting Started](#getting-started) |
 [Prerequisites](#prerequisites) |
 [Installation](#installation) |
-[How to run](#how-to-run) |
+[How to run](#how-to-run-api) |
 [Contributing](#contributing)
 
 # Assumptions
 - The `pol_pol` table has some string length constraints that were not explicitly defined but follow logical rules.
 - There is no dedicated `pol_ratings` table because this data isn't going to be updated
 - Identifiers in imported files are treated as external ones
+- external_id_category is used as unique key far inserts/updates 
 
 
 # Things to improve
