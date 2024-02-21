@@ -14,7 +14,8 @@ This is the test task I received during interview process
 - The `pol_pol` table has some string length constraints that were not explicitly defined but follow logical rules.
 - There is no dedicated `pol_ratings` table because this data isn't going to be updated
 - Identifiers in imported files are treated as external ones
-- external_id_category is used as unique key far inserts/updates 
+- `pol_pol.external_id`+`pol_pol.category` is used as unique key far inserts/updates during file import
+- `pol_pol.external_id` is a string, but it should be int more likely, str just more robust from file import prospective
 
 
 # Things to improve
@@ -25,6 +26,8 @@ This is the test task I received during interview process
 - [ ] introduce [tqdm](https://github.com/tqdm/tqdm) for console progress
 - [ ] change namings from POL to POI
 - [ ] try concurrent import or even introduce distributed import (a.k.a. celery or similar)
+- [ ] JSON & XML files are loaded fully into memory before import, it wouldn't work with large files, [ijson](https://github.com/ICRAR/ijson) can be uses for 
+  JSON streaming
 
 # Getting Started
 
