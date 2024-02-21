@@ -9,6 +9,13 @@ from tablib import Dataset
 from pol.import_export import BATCH_SIZE
 
 
+FIVE_PLACES = Decimal(10) ** -5
+
+
+def quantize(value: float) -> Decimal:
+    return Decimal(value).quantize(FIVE_PLACES)
+
+
 class Record(BaseModel):
     name: str
     external_id: str

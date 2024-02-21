@@ -4,7 +4,7 @@ from typing import Iterator, Annotated
 
 from pydantic import BeforeValidator, Field
 
-from .base import BaseAdapter, Record
+from .base import BaseAdapter, Record, quantize
 
 
 def merge_ratings(v: list[int]) -> str:
@@ -15,8 +15,12 @@ class JSONRecord(Record):
     name: str
     external_id: Annotated[str, Field(alias="id")]
     category: str
-    latitude: Annotated[Decimal, Field(alias=["coordinates", "latitude"])]
-    longitude: Annotated[Decimal, Field(alias=["coordinates", "longitude"])]
+    latitude: Annotated[
+        Decimal, Field(alias=["coordinates", "latitude"]), BeforeValidator(quantize)
+    ]
+    longitude: Annotated[
+        Decimal, Field(alias=["coordinates", "longitude"]), BeforeValidator(quantize)
+    ]
     ratings: Annotated[str, BeforeValidator(merge_ratings)]
 
 

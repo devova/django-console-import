@@ -4,7 +4,7 @@ from typing import Annotated, Iterator
 
 from pydantic import Field, BeforeValidator
 
-from .base import BaseAdapter, Record
+from .base import BaseAdapter, Record, quantize
 
 
 def parse_ratings(v) -> str:
@@ -19,8 +19,10 @@ class CSVRecord(Record):
     name: Annotated[str, Field(alias="poi_name")]
     external_id: Annotated[str, Field(alias="poi_id")]
     category: Annotated[str, Field(alias="poi_category")]
-    latitude: Annotated[Decimal, Field(alias="poi_latitude")]
-    longitude: Annotated[Decimal, Field(alias="poi_longitude")]
+    latitude: Annotated[Decimal, Field(alias="poi_latitude"), BeforeValidator(quantize)]
+    longitude: Annotated[
+        Decimal, Field(alias="poi_longitude"), BeforeValidator(quantize)
+    ]
     ratings: Annotated[str, Field(alias="poi_ratings"), BeforeValidator(parse_ratings)]
 
 
