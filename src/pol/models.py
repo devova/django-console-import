@@ -2,9 +2,12 @@ from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.indexes import HashIndex
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django_cte import CTEManager
 
 
 class Pol(models.Model):
+    objects = CTEManager()
+
     name = models.CharField(max_length=256)
     external_id = models.CharField(max_length=256, db_index=True)
     category = models.CharField(max_length=256)
