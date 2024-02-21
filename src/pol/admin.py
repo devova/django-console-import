@@ -1,5 +1,6 @@
 from django.contrib import admin
-from django.db.models import Avg, Func, F
+from django.db.models import Avg, Func, F, DecimalField
+from django.db.models.functions import Cast
 from django_cte import With
 
 from .models import Pol
@@ -7,7 +8,7 @@ from .models import Pol
 
 class PolAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "external_id", "category", "avg_rating")
-    list_filter = ("category",)
+    list_filter = ("category__name",)
     search_fields = ("id", "external_id")
 
     def get_queryset(self, request):
@@ -20,9 +21,16 @@ class PolAdmin(admin.ModelAdmin):
             )
         )
         return (
-            cte.join(super().get_queryset(request), id=cte.col.id)
+            cte.join(
+                super().get_queryset(request).select_related("category"), id=cte.col.id
+            )
             .with_cte(cte)
-            .annotate(avg_rating=Avg(cte.col.unnest_ratings))
+            .annotate(
+                avg_rating=Cast(
+                    Avg(cte.col.unnest_ratings),
+                    DecimalField(max_digits=3, decimal_places=2),
+                )
+            )
         )
 
     @staticmethod

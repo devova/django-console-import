@@ -11,7 +11,8 @@ This is the test task I received during interview process
 [Contributing](#contributing)
 
 # Assumptions
-The POL table has some constraints that were not explicitly defined but follow logical rules.
+- The `pol_pol` table has some string length constraints that were not explicitly defined but follow logical rules.
+- There is no dedicated `pol_ratings` table because this data isn't going to be updated
 
 
 # Features
